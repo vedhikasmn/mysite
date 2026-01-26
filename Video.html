@@ -1,82 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sekai Universe | Audio Enabled</title>
-    <style>
-        body { 
-            background-image: url('Gamebackground.png');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            background-repeat: no-repeat;
-            background-color: #000;
-            
-            font-family: 'Segoe UI', sans-serif; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-            color: white;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sekai Universe | Audio Enabled</title>
+  <style>
+    body {
+      background-image: url('Gamebackground.png');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      background-repeat: no-repeat;
+      background-color: #000;
 
-        .video-container {
-            width: 80%;
-            max-width: 800px;
-            border: 4px solid #00d4ff;
-            box-shadow: 0 0 30px rgba(0, 212, 255, 0.6);
-            background: black;
-            border-radius: 12px;
-            overflow: hidden;
-            display: none; /* Hidden until user clicks play */
-        }
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      color: white;
+    }
 
-        video { width: 100%; display: block; }
+    .video-container {
+      width: 80%;
+      max-width: 800px;
+      border: 4px solid #00d4ff;
+      box-shadow: 0 0 30px rgba(0, 212, 255, 0.6);
+      background: black;
+      border-radius: 12px;
+      overflow: hidden;
+      display: none; /* Hidden until user clicks play */
+    }
 
-        .play-btn {
-            padding: 20px 50px;
-            font-size: 20px;
-            background: #00d4ff;
-            color: black;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            text-transform: uppercase;
-            box-shadow: 0 0 20px #00d4ff;
-        }
+    video {
+      width: 100%;
+      display: block;
+    }
 
-        .play-btn:hover { background: white; }
-    </style>
+    .play-btn {
+      padding: 20px 50px;
+      font-size: 20px;
+      background: #00d4ff;
+      color: black;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      text-transform: uppercase;
+      box-shadow: 0 0 20px #00d4ff;
+    }
+
+    .play-btn:hover {
+      background: white;
+    }
+  </style>
 </head>
 <body>
 
-    <button id="startBtn" class="play-btn" onclick="enableAudio()">Initialize Game Feed</button>
+  <button id="startBtn" class="play-btn" onclick="enableAudio()">Initialize Game Feed</button>
 
-    <div id="vContainer" class="video-container">
-        <video id="myVideo" controls loop>
-            <source src="Game_Video.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-    </div>
+  <div id="vContainer" class="video-container">
+    <video id="myVideo" controls loop playsinline>
+      <source src="Game_Video.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </div>
 
-    <script>
-        function enableAudio() {
-            const video = document.getElementById('myVideo');
-            const container = document.getElementById('vContainer');
-            const btn = document.getElementById('startBtn');
+  <script>
+    function enableAudio() {
+      const video = document.getElementById('myVideo');
+      const container = document.getElementById('vContainer');
+      const btn = document.getElementById('startBtn');
 
-            // Show video, hide button
-            container.style.display = "block";
-            btn.style.display = "none";
+      // Show video, hide button
+      container.style.display = "block";
+      btn.style.display = "none";
 
-            // Play video with audio
-            video.play();
-        }
-    </script>
+      // Ensure audio is enabled
+      video.muted = false;   // explicitly unmute
+      video.volume = 1.0;    // set volume to max
+
+      // Play video with audio
+      video.play().catch(err => {
+        console.log("Playback failed:", err);
+      });
+    }
+  </script>
 
 </body>
 </html>
