@@ -3,16 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sekai Universe | Game Portal</title>
+    <title>Sekai Universe | Audio Enabled</title>
     <style>
         body { 
-            /* 1. IMAGE BACKGROUND */
             background-image: url('Gamebackground.png');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
             background-repeat: no-repeat;
-            background-color: #000; /* Fallback */
+            background-color: #000;
             
             font-family: 'Segoe UI', sans-serif; 
             display: flex; 
@@ -21,10 +20,9 @@
             justify-content: center;
             height: 100vh;
             margin: 0;
-            overflow: hidden;
+            color: white;
         }
 
-        /* 2. VIDEO STYLING */
         .video-container {
             width: 80%;
             max-width: 800px;
@@ -33,32 +31,52 @@
             background: black;
             border-radius: 12px;
             overflow: hidden;
+            display: none; /* Hidden until user clicks play */
         }
 
-        video {
-            width: 100%;
-            display: block;
-        }
+        video { width: 100%; display: block; }
 
-        .title {
-            color: #00d4ff;
+        .play-btn {
+            padding: 20px 50px;
+            font-size: 20px;
+            background: #00d4ff;
+            color: black;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
             text-transform: uppercase;
-            letter-spacing: 4px;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.8);
+            box-shadow: 0 0 20px #00d4ff;
         }
+
+        .play-btn:hover { background: white; }
     </style>
 </head>
 <body>
 
-    <h1 class="title">Project Aegis Feed</h1>
+    <button id="startBtn" class="play-btn" onclick="enableAudio()">Initialize Game Feed</button>
 
-    <div class="video-container">
-        <video controls autoplay muted loop>
+    <div id="vContainer" class="video-container">
+        <video id="myVideo" controls loop>
             <source src="Game_Video.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
     </div>
+
+    <script>
+        function enableAudio() {
+            const video = document.getElementById('myVideo');
+            const container = document.getElementById('vContainer');
+            const btn = document.getElementById('startBtn');
+
+            // Show video, hide button
+            container.style.display = "block";
+            btn.style.display = "none";
+
+            // Play video with audio
+            video.play();
+        }
+    </script>
 
 </body>
 </html>
