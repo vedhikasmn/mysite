@@ -1,93 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sekai Universe | Audio Enabled</title>
-  <style>
-    body {
-      background-image: url('Gamebackground.png');
-      background-size: cover;
-      background-position: center;
-      background-attachment: fixed;
-      background-repeat: no-repeat;
-      background-color: #000;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sekai Universe | Project Aegis Feed</title>
+    <style>
+        /* 1. RESET AND HIDE OVERFLOW */
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            background-color: #000;
+            font-family: 'Segoe UI', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-      font-family: 'Segoe UI', sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
-      color: white;
-    }
+        /* 2. BACKGROUND IMAGE (Visible before video starts) */
+        body {
+            background-image: url('Gamebackground.png');
+            background-size: 100% 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
 
-    .video-container {
-      width: 80%;
-      max-width: 800px;
-      border: 4px solid #00d4ff;
-      box-shadow: 0 0 30px rgba(0, 212, 255, 0.6);
-      background: black;
-      border-radius: 12px;
-      overflow: hidden;
-      display: none; /* Hidden until user clicks play */
-    }
+        /* 3. FULL WINDOW VIDEO CONTAINER */
+        .video-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: black;
+            display: none; /* Hidden until button click */
+            z-index: 5;
+        }
 
-    video {
-      width: 100%;
-      display: block;
-    }
+        /* Forces the video to stretch/fit the entire window */
+        video {
+            width: 60%;
+            height: 100%;
+            object-fit: fill; /* Use 'fill' to force exact window fit or 'cover' to maintain aspect ratio */
+        }
 
-    .play-btn {
-      padding: 20px 50px;
-      font-size: 20px;
-      background: #00d4ff;
-      color: black;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: bold;
-      text-transform: uppercase;
-      box-shadow: 0 0 20px #00d4ff;
-    }
+        .play-btn {
+            padding: 20px 50px;
+            font-size: 20px;
+            background: #00d4ff;
+            color: black;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+            box-shadow: 0 0 20px #00d4ff;
+            z-index: 10;
+        }
 
-    .play-btn:hover {
-      background: white;
-    }
-  </style>
+        .play-btn:hover {
+            background: white;
+            transform: scale(1.05);
+            transition: 0.3s;
+        }
+    </style>
 </head>
 <body>
 
-  <button id="startBtn" class="play-btn" onclick="enableAudio()">Initialize Game Feed</button>
+    <button id="startBtn" class="play-btn" onclick="enableAudio()">Initialize Game Feed</button>
 
-  <div id="vContainer" class="video-container">
-    <video id="myVideo" controls >
-      <source src="Game_Video.mp4" type="video/mp4">
-      Your browser does not support the video tag.
-    </video>
-  </div>
+    <div id="vContainer" class="video-container">
+        <video id="myVideo">
+            <source src="Game_Video.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
 
-  <script>
-    function enableAudio() {
-      const video = document.getElementById('myVideo');
-      const container = document.getElementById('vContainer');
-      const btn = document.getElementById('startBtn');
+    <script>
+        function enableAudio() {
+            const video = document.getElementById('myVideo');
+            const container = document.getElementById('vContainer');
+            const btn = document.getElementById('startBtn');
 
-      // Show video, hide button
-      container.style.display = "block";
-      btn.style.display = "none";
+            // Show full-window container, hide button
+            container.style.display = "block";
+            btn.style.display = "none";
 
-      // Ensure audio is enabled
-      video.muted = false;   // explicitly unmute
-      video.volume = 1.0;    // set volume to max
+            // Audio/Video logic
+            video.muted = false;
+            video.volume = 1.0;
 
-      // Play video with audio
-      video.play().catch(err => {
-        console.log("Playback failed:", err);
-      });
-    }
-  </script>
+            // Play once
+            video.play().catch(err => {
+                console.log("Playback failed:", err);
+            });
+
+            // OPTIONAL: Automatically show a "Next" button when the video ends
+            video.onended = function() {
+                console.log("Video finished playing.");
+                // You could redirect the user or show a hidden button here
+            };
+        }
+    </script>
 
 </body>
 </html>
