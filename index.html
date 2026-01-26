@@ -6,12 +6,13 @@
     <title>Sekai Universe | Project Aegis</title>
     <style>
         body { 
-            /* 1. IMAGE AS BACKGROUND */
-            background-image: url('Screenshot 2026-01-26 175548.png');
-            background-size: cover;       /* Ensures image covers whole screen */
-            background-position: center;  /* Centers the background image */
-            background-attachment: fixed; /* Keeps background from scrolling */
+            /* Added %20 to handle the spaces in your specific filename */
+            background-image: url('Screenshot%202026-01-26%20175548.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
             background-repeat: no-repeat;
+            background-color: #0a0a0c; /* Fallback color if image fails */
             
             font-family: 'Segoe UI', sans-serif; 
             display: flex; 
@@ -21,24 +22,24 @@
             height: 100vh;
             margin: 0;
             color: white;
+            overflow: hidden;
         }
 
-        /* 2. OVERLAID TEXT BOX */
         .overlay-input { 
             padding: 15px;
             width: 300px;
             font-size: 18px;
-            background: rgba(0, 0, 0, 0.8); /* Dark backing for readability */
-            color: #00d4ff; /* Neon blue text */
+            background: rgba(0, 0, 0, 0.8);
+            color: #00d4ff;
             border: 2px solid #00d4ff;
             border-radius: 8px;
             text-align: center;
             box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
             outline: none;
             margin-bottom: 25px;
+            z-index: 2;
         }
 
-        /* 3. NAVIGATION BUTTON */
         .nav-button { 
             padding: 15px 40px; 
             background-color: #00d4ff; 
@@ -49,6 +50,7 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             transition: 0.3s;
+            z-index: 2;
         }
         .nav-button:hover { 
             background-color: #ffffff;
@@ -60,7 +62,6 @@
 <body>
 
     <input type="text" class="overlay-input" value="Vedhika S">
-
     <a href="Biometric_scan.html" class="nav-button">Enter Sekai Universe</a>
 
 </body>
