@@ -6,13 +6,12 @@
     <title>Sekai Universe | Project Aegis</title>
     <style>
         body { 
-            /* Added %20 to handle the spaces in your specific filename */
             background-image: url('FrontPage_img.png');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
             background-repeat: no-repeat;
-            background-color: #0a0a0c; /* Fallback color if image fails */
+            background-color: #0a0a0c; 
             
             font-family: 'Segoe UI', sans-serif; 
             display: flex; 
@@ -25,22 +24,12 @@
             overflow: hidden;
         }
 
-        .overlay-input { 
-            padding: 15px;
-            width: 300px;
-            font-size: 18px;
-            background: rgba(0, 0, 0, 0.8);
-            color: #00d4ff;
-            border: 2px solid #00d4ff;
-            border-radius: 8px;
-            text-align: center;
-            box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
-            outline: none;
-            margin-bottom: 25px;
-            z-index: 2;
-        }
-
+        /* POSITIONED TO RIGHT CORNER */
         .nav-button { 
+            position: fixed;   /* Anchors to the viewport */
+            bottom: 40px;      /* Distance from bottom */
+            right: 40px;       /* Distance from right */
+            
             padding: 15px 40px; 
             background-color: #00d4ff; 
             color: black; 
@@ -50,8 +39,10 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             transition: 0.3s;
-            z-index: 2;
+            z-index: 10;       /* Ensures it stays on top of everything */
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
         }
+
         .nav-button:hover { 
             background-color: #ffffff;
             box-shadow: 0 0 25px #00d4ff; 
@@ -60,7 +51,8 @@
     </style>
 </head>
 <body>
-    <a href="Info_P1.html" class="nav-button">Next</a>
+
+    <a href="Info_P1.html" class="nav-button">Next →</a>
 
 </body>
 </html>
