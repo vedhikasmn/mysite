@@ -1,96 +1,135 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Computing MI</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      background-color: #f9f9f9;
-      color: #333;
-    }
-    header {
-      background-color: #222;
-      color: #fff;
-      padding: 20px;
-      text-align: center;
-    }
-    header h1 {
-      margin: 0;
-      font-size: 2em;
-    }
-    nav {
-      margin-top: 10px;
-    }
-    nav a {
-      color: #fff;
-      margin: 0 15px;
-      text-decoration: none;
-      font-weight: bold;
-    }
-    nav a:hover {
-      text-decoration: underline;
-    }
-    main {
-      padding: 40px;
-      max-width: 800px;
-      margin: auto;
-      background-color: #fff;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    main h2 {
-      color: #007BFF;
-    }
-    footer {
-      background-color: #222;
-      color: #fff;
-      text-align: center;
-      padding: 20px;
-      margin-top: 40px;
-    }
-    footer a {
-      color: #00c3ff;
-      text-decoration: none;
-    }
-    footer a:hover {
-      text-decoration: underline;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sekai Universe | Project Aegis</title>
+    <style>
+        :root {
+            --neon-blue: #00d4ff;
+            --bg-dark: #0a0a0c;
+            --text-gray: #b0b0b0;
+        }
+        body {
+            background-color: var(--bg-dark);
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        section {
+            padding: 80px 20px;
+            max-width: 800px;
+            min-height: 60vh;
+            border-bottom: 1px solid #222;
+        }
+        h1 { color: var(--neon-blue); font-size: 2.5rem; text-transform: uppercase; letter-spacing: 3px; }
+        .vision { font-style: italic; color: var(--text-gray); }
+        .warning { color: #ff4d4d; font-weight: bold; }
+        
+        /* Video Simulation */
+        #webcam-container {
+            width: 100%;
+            max-width: 500px;
+            height: 300px;
+            background: #111;
+            border: 2px solid var(--neon-blue);
+            margin: 20px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        video { width: 100%; height: 100%; object-fit: cover; display: none; }
+        
+        .btn {
+            background: transparent;
+            border: 2px solid var(--neon-blue);
+            color: var(--neon-blue);
+            padding: 15px 30px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.3s;
+            text-transform: uppercase;
+            margin-top: 20px;
+        }
+        .btn:hover { background: var(--neon-blue); color: black; box-shadow: 0 0 20px var(--neon-blue); }
+        #status-msg { margin-top: 20px; font-weight: bold; height: 24px; }
+    </style>
 </head>
 <body>
-  <!-- Header -->
-  <header>
-    <h1>Computing MI</h1>
-    <nav>
-      <a href="#terms">Terms & Support</a>
-      <a href="#privacy">Privacy Policy</a>
-    </nav>
-  </header>
 
-  <!-- Main Content -->
-  <main>
-    <h2 id="terms">Terms & Support</h2>
-    <p>
-      This website has been created with Canva, but the content is User Content that is subject to our 
-      <a href="https://www.canva.com/policies/terms-of-use/" target="_blank">Terms of Use</a>. 
-      If you see anything that breaches our 
-      <a href="https://www.canva.com/policies/acceptable-use-policy/" target="_blank">acceptable use policy</a>, 
-      please report it to our content review team.
-    </p>
+    <section>
+        [cite_start]<h1>Zero Trust Vision [cite: 1]</h1>
+        [cite_start]<p class="vision">Next Frontier of Protection [cite: 2]</p>
+        [cite_start]<p>The Sekai Universe is a restricted digital environment that protects your computer from viruses[cite: 4].</p>
+    </section>
 
-    <h2 id="privacy">Privacy Policy</h2>
-    <p>
-      Personal data entered into this website may be collected and used according to the creator's own privacy practices. 
-      See Canva’s 
-      <a href="https://www.canva.com/policies/privacy-policy/" target="_blank">Privacy Policy</a> 
-      to learn how Canva processes personal data.
-    </p>
-  </main>
+    <section>
+        [cite_start]<h1>Project Aegis [cite: 7]</h1>
+        [cite_start]<p>In an age of automated hacking, a simple password is no longer enough[cite: 6].</p>
+        [cite_start]<p>Our system uses a <strong>Neural Network</strong> to ensure only authorized inhabitants can bridge the gap[cite: 8].</p>
+        [cite_start]<p class="warning">Note: The AI sees humans as authorized and objects/images as unauthorized[cite: 11].</p>
+    </section>
 
-  <!-- Footer -->
-  <footer>
-    <p>Designed with <a href="https://www.canva.com" target="_blank">Canva</a></p>
-  </footer>
+    <section>
+        [cite_start]<h1>Vulnerability Test [cite: 12]</h1>
+        [cite_start]<p>We tested against 'Face Spoofing'—where hackers use high-res photos to trick the AI[cite: 13].</p>
+        [cite_start]<p>To defeat this, we use <strong>Liveness Detection</strong>: actions like blinking or nodding prove you are a living human[cite: 15].</p>
+    </section>
+
+    <section id="verification">
+        [cite_start]<h1>Click to Verify [cite: 17]</h1>
+        [cite_start]<p><strong>Step 1:</strong> Open your webcam and sit clearly in front of it (no masks)[cite: 19].</p>
+        [cite_start]<p><strong>Step 2:</strong> Press the button below to authorize[cite: 20].</p>
+        
+        <div id="webcam-container">
+            <video id="video" autoplay playsinline></video>
+            <div id="placeholder">WEBCAM OFFLINE</div>
+        </div>
+
+        <button class="btn" onclick="startVerification()">Verify Biometrics</button>
+        <p id="status-msg"></p>
+        
+        <div id="access-granted" style="display:none;">
+            [cite_start]<h2 style="color: #4aff4a;">Congratulations! [cite: 23]</h2>
+            [cite_start]<p>You are an authorized person[cite: 23].</p>
+            [cite_start]<button class="btn" onclick="alert('Welcome to Sekai Universe!')">Enter Sekai [cite: 22]</button>
+        </div>
+    </section>
+
+    <script>
+        async function startVerification() {
+            const video = document.getElementById('video');
+            const placeholder = document.getElementById('placeholder');
+            const status = document.getElementById('status-msg');
+            const grant = document.getElementById('access-granted');
+
+            try {
+                [cite_start]// Step 1: Request Camera [cite: 19]
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                video.srcObject = stream;
+                video.style.display = "block";
+                placeholder.style.display = "none";
+                status.innerText = "Scanning Biometric Signature...";
+
+                [cite_start]// Step 2: Simulate "Neural Network" check [cite: 8, 20]
+                setTimeout(() => {
+                    status.innerText = "Liveness Detected. Identity Confirmed.";
+                    status.style.color = "#4aff4a";
+                    grant.style.display = "block";
+                }, 3000);
+
+            } catch (err) {
+                status.innerText = "Error: Webcam access denied.";
+                status.style.color = "#ff4d4d";
+            }
+        }
+    </script>
+
 </body>
 </html>
