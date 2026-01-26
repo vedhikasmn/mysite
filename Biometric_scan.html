@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Biometric Scanner - Hosted</title>
+  <style>
+    body { background:#000; color:#00ff00; font-family:monospace; text-align:center; padding:18px; }
+    .gate { border:2px solid #00ff00; padding:16px; border-radius:10px; display:inline-block; }
+    video { width:320px; height:320px; background:#111; border:1px solid #333; object-fit:cover; display:block; margin:12px auto; }
+    button { background:#00ff00; color:#000; border:none; padding:10px 18px; font-weight:bold; cursor:pointer; border-radius:6px; }
+    #error { color:#ff4444; margin-top:10px; font-size:13px; min-height:1.2em; }
+    #status { color:#00ff88; margin-top:8px; font-size:13px; min-height:1.2em; }
+    .fallback { margin-top:12px; color:#00ff88; font-size:13px; }
+    a.fallback-link { color:#000; background:#00ff88; padding:8px 12px; border-radius:6px; text-decoration:none; font-weight:bold; display:inline-block; margin-top:8px; }
+  </style>
+</head>
+<body>
+  <div class="gate" role="region" aria-label="Biometric Gate">
+    <h3>[ BIOMETRIC GATE ]</h3>
+    <button id="initBtn">INITIALIZE SENSOR</button>
+
+    <video id="video" autoplay playsinline muted></video>
+
+    <div id="status" aria-live="polite"></div>
+    <div id="error" aria-live="assertive"></div>
+
+    <div class="fallback" id="fallback" style="display:none;">
+      <!-- If the embed cannot access your camera, open the scanner directly: -->
+      <div><a id="directLink" class="fallback-link" target="_blank" rel="noopener"> <!-- Open scanner in new tab --> </a></div>
+    </div>
+  </div>
+
+  <!-- Teachable Machine scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
+
+  <script>
+    (function(){
+      // CONFIG: model base and redirect URL (your Canva slide)
+      const MODEL_BASE = "https://teachablemachine.withgoogle.com/models/Wh48NC9hz/";
+      const REDIRECT_URL = "https://www.canva.com/design/DAG-93ETT6c/GrkfJ_8L9myZt9VP3rVl9A/edit?ui=eyJEIjp7IlQiOnsiQSI6IlBCVHg0dk0yNjBOUWp2WDcifX19";
+
+      const initBtn = document.getElementById('initBtn');
+      const video = document.getElementById('video');
+      const status = document.getElementById('status');
+      const error = document.getElementById('error');
+      const fallback = document.getElementById('fallback');
+      const directLink = document.getElementById('directLink');
+
+      let model = null;
+      let running = false;
+      let currentStream = null;
+      const PROB_THRESHOLD = 0.95; // fallback threshold
+
+      directLink.href = location.href; // direct link to this hosted page
+
+      function setStatus(t){ status.textContent = t || ''; }
+      function setError(t){ error.textContent = t || ''; }
+
+      async function loadModel(){
+        setStatus('Loading model...');
+        try {
+          model = await tmImage.load(MODEL_BASE + 'model.json', MODEL_BASE + 'metadata.json');
+          setStatus('Model loaded.');
+        } catch (e) {
+          console.error('Model load failed', e);
+          setError('MODEL LOAD ERROR: ' + (e.message || e.name));
+          throw e;
+        }
+      }
+
+      async function startCamera(){
+        setStatus('Requesting camera...');
+        setError('');
+        const constraints = { video: { width:320, height:320, facingMode:'user' }, audio:false };
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia(constraints);
+          currentStream = stream;
+          video.srcObject = stream;
+          await video.play();
+          setStatus('Camera started.');
+          return stream;
+        } catch (e) {
+          console.error('getUserMedia error', e);
+          if (e.name === 'NotAllowedError' || e.name === 'PermissionDeniedError') {
+            setError('SYSTEM ERROR: Camera permission denied or blocked.');
+          } else if (e.name === 'NotFoundError' || e.name === 'OverconstrainedError') {
+            setError('SYSTEM ERROR: No camera found or constraints cannot be satisfied.');
+          } else {
+            setError('SYSTEM ERROR: ' + (e.message || e.name));
+          }
+          fallback.style.display = 'block';
+          return null;
+        }
+      }
+
+      function stopCamera() {
+        try {
+          if (currentStream) {
+            currentStream.getTracks().forEach(t => t.stop());
+            currentStream = null;
+          }
+          if (video && video.srcObject) {
+            video.srcObject = null;
+          }
+        } catch (e) {
+          console.warn('stopCamera error', e);
+        }
+      }
+
+      // Try to redirect safely (parent/top/self)
+      function safeRedirect(url) {
+        stopCamera();
+        try { if (window.parent && window.parent !== window) { window.parent.location.href = url; return; } } catch(e) {}
+        try { if (window.top && window.top !== window) { window.top.location.href = url; return; } } catch(e) {}
+        window.location.href = url;
+      }
+
+      async function scanLoop(){
+        if (!running || !model) return;
+        try {
+          const preds = await model.predict(video);
+          if (preds && preds.length){
+            // Check for explicit "unauthorized" class (case-insensitive)
+            const unauthorizedPred = preds.find(p => p.className && p.className.toLowerCase() === 'unauthorized');
+            if (unauthorizedPred && unauthorizedPred.probability >= PROB_THRESHOLD) {
+              running = false;
+              stopCamera();
+              setStatus(`unauthorized: ${(unauthorizedPred.probability*100).toFixed(1)}%`);
+              setError('ACCESS DENIED: Unauthorized user detected.');
+              // Show fallback so user can open in new tab or try again
+              fallback.style.display = 'block';
+              initBtn.disabled = false;
+              return;
+            }
+
+            // Find class named "authorized" (case-insensitive)
+            const authorizedPred = preds.find(p => p.className && p.className.toLowerCase() === 'authorized');
+            if (authorizedPred && authorizedPred.probability >= PROB_THRESHOLD) {
+              running = false;
+              setStatus(`authorized: ${(authorizedPred.probability*100).toFixed(1)}% — Redirecting...`);
+              setTimeout(() => safeRedirect(REDIRECT_URL), 250);
+              return;
+            }
+
+            // Fallback: check top class probability
+            const top = preds.reduce((a,b) => a.probability > b.probability ? a : b);
+            setStatus(`${top.className}: ${(top.probability*100).toFixed(1)}%`);
+            if (top.probability >= PROB_THRESHOLD) {
+              running = false;
+              setStatus(`${top.className}: ${(top.probability*100).toFixed(1)}% — Redirecting...`);
+              setTimeout(() => safeRedirect(REDIRECT_URL), 250);
+              return;
+            }
+          }
+        } catch (err) {
+          console.error('Prediction error', err);
+          setError('PREDICTION ERROR: ' + (err.message || err.name));
+          running = false;
+          initBtn.disabled = false;
+          stopCamera();
+          return;
+        }
+        requestAnimationFrame(scanLoop);
+      }
+
+      async function startScanner(){
+        initBtn.disabled = true;
+        setError('');
+        setStatus('Initializing...');
+        const stream = await startCamera();
+        if (!stream) {
+          initBtn.disabled = false;
+          return;
+        }
+        try {
+          if (!model) await loadModel();
+        } catch (e) {
+          initBtn.disabled = false;
+          stopCamera();
+          return;
+        }
+        running = true;
+        setStatus('Scanning...');
+        scanLoop();
+      }
+
+      // Hint when embedded
+      try {
+        if (window.self !== window.top) {
+          setStatus('Running inside an embed. If camera is blocked, use "Open scanner in new tab".');
+        }
+      } catch (e) {
+        setStatus('Running inside an embed. If camera is blocked, use "Open scanner in new tab".');
+      }
+
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        setError('Browser does not support getUserMedia. Use a modern browser over HTTPS.');
+        initBtn.disabled = true;
+      }
+
+      initBtn.addEventListener('click', startScanner);
+    })();
+  </script>
+</body>
+</html>
