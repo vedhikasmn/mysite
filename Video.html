@@ -1,109 +1,138 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sekai Universe | Project Aegis Feed</title>
-    <style>
-        /* 1. RESET AND HIDE OVERFLOW */
-        html, body {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            width: 100%;
-            overflow: hidden;
-            background-color: #000;
-            font-family: 'Segoe UI', sans-serif;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sekai Universe | Project Aegis Feed</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      background-color: #000;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-        /* 2. BACKGROUND IMAGE (Visible before video starts) */
-        body {
-            background-image: url('Gamebackground.png');
-            background-size: 100% 100%;
-            background-position: center;
-            background-repeat: no-repeat;
-        }
+    body {
+      background-image: url('Gamebackground.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
 
-        /* 3. FULL WINDOW VIDEO CONTAINER */
-        .video-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: black;
-            display: none; /* Hidden until button click */
-            z-index: 5;
-        }
+    .video-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: black;
+      display: none; /* Hidden until button click */
+      z-index: 5;
 
-        /* Forces the video to stretch/fit the entire window */
-        video {
-            width: 60%;
-            height: 100%;
-            object-fit: fill; /* Use 'fill' to force exact window fit or 'cover' to maintain aspect ratio */
-        }
+      /* Flexbox to center video */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-        .play-btn {
-            padding: 20px 50px;
-            font-size: 20px;
-            background: #00d4ff;
-            color: black;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            text-transform: uppercase;
-            box-shadow: 0 0 20px #00d4ff;
-            z-index: 10;
-        }
+    video {
+      max-width: 60%;
+      max-height: 100%;
+      object-fit: contain; /* Keeps aspect ratio, fits within window */
+      border: 4px solid #00d4ff;
+      border-radius: 12px;
+      box-shadow: 0 0 30px rgba(0, 212, 255, 0.6);
+    }
 
-        .play-btn:hover {
-            background: white;
-            transform: scale(1.05);
-            transition: 0.3s;
-        }
-    </style>
+    .play-btn {
+      padding: 20px 50px;
+      font-size: 20px;
+      background: #00d4ff;
+      color: black;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      text-transform: uppercase;
+      box-shadow: 0 0 20px #00d4ff;
+      z-index: 10;
+    }
+
+    .play-btn:hover {
+      background: white;
+      transform: scale(1.05);
+      transition: 0.3s;
+    }
+
+    /* Next button styling */
+    .next-btn {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      padding: 15px 30px;
+      font-size: 18px;
+      background: #00d4ff;
+      color: black;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      text-transform: uppercase;
+      box-shadow: 0 0 20px #00d4ff;
+      display: none; /* Hidden until video ends */
+    }
+
+    .next-btn:hover {
+      background: white;
+    }
+  </style>
 </head>
 <body>
 
-    <button id="startBtn" class="play-btn" onclick="enableAudio()">Initialize Game Feed</button>
+  <button id="startBtn" class="play-btn" onclick="enableAudio()">Initialize Game Feed</button>
 
-    <div id="vContainer" class="video-container">
-        <video id="myVideo">
-            <source src="Game_Video.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-    </div>
+  <div id="vContainer" class="video-container">
+    <video id="myVideo">
+      <source src="Game_Video.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+    <button id="nextBtn" class="next-btn" onclick="goNext()">Next</button>
+  </div>
 
-    <script>
-        function enableAudio() {
-            const video = document.getElementById('myVideo');
-            const container = document.getElementById('vContainer');
-            const btn = document.getElementById('startBtn');
+  <script>
+    function enableAudio() {
+      const video = document.getElementById('myVideo');
+      const container = document.getElementById('vContainer');
+      const btn = document.getElementById('startBtn');
 
-            // Show full-window container, hide button
-            container.style.display = "block";
-            btn.style.display = "none";
+      // Show video container, hide start button
+      container.style.display = "flex";
+      btn.style.display = "none";
 
-            // Audio/Video logic
-            video.muted = false;
-            video.volume = 1.0;
+      // Ensure audio plays
+      video.muted = false;
+      video.volume = 1.0;
 
-            // Play once
-            video.play().catch(err => {
-                console.log("Playback failed:", err);
-            });
+      video.play().catch(err => {
+        console.log("Playback failed:", err);
+      });
 
-            // OPTIONAL: Automatically show a "Next" button when the video ends
-            video.onended = function() {
-                console.log("Video finished playing.");
-                // You could redirect the user or show a hidden button here
-            };
-        }
-    </script>
+      // Show Next button when video ends
+      video.onended = function() {
+        document.getElementById('nextBtn').style.display = "block";
+      };
+    }
+
+    function goNext() {
+      // Redirect or load next page
+      window.location.href = "next.html"; 
+    }
+  </script>
 
 </body>
 </html>
