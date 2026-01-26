@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sekai Universe | Project Aegis</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            background-color: #0a0a0c; 
+        }
+
+        body { 
+            /* RE-SIZING LOGIC */
+            background-image: url('Info_P1_img.png');
+            
+            /* '100% 100%' forces the image to stretch to the exact window edges */
+            background-size: 100% 100%; 
+            
+            background-position: center;
+            background-repeat: no-repeat;
+            font-family: 'Segoe UI', sans-serif; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+        }
+
+        /* POSITIONED TO BOTTOM RIGHT CORNER */
+        .nav-button { 
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            
+            padding: 12px 35px; 
+            background-color: #00d4ff; 
+            color: black; 
+            text-decoration: none; 
+            border-radius: 6px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: 0.3s;
+            z-index: 10;
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.4);
+        }
+
+        .nav-button:hover { 
+            background-color: #ffffff;
+            box-shadow: 0 0 25px #00d4ff; 
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+
+    <a href="Info_P3.html" class="nav-button">Next →</a>
+
+</body>
+</html>
