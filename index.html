@@ -3,65 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Computing MI | Sekai Universe</title>
+    <title>Sekai Project | Home</title>
     <style>
-        :root { --neon: #00d4ff; --dark: #0a0a0c; }
-        body { background: var(--dark); color: white; font-family: sans-serif; margin: 0; text-align: center; }
-        header { background: #1a1a1a; padding: 20px; border-bottom: 2px solid var(--neon); }
-        section { padding: 60px 20px; border-bottom: 1px solid #333; max-width: 900px; margin: auto; }
-        .btn { border: 2px solid var(--neon); color: var(--neon); padding: 15px 30px; cursor: pointer; background: none; text-transform: uppercase; }
-        .btn:hover { background: var(--neon); color: black; }
-        video { width: 100%; max-width: 500px; border: 1px solid var(--neon); margin: 20px 0; }
-        footer { padding: 40px; font-size: 0.8rem; color: #666; background: #000; }
-        a { color: var(--neon); text-decoration: none; }
+        body { 
+            font-family: 'Segoe UI', sans-serif; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f9;
+        }
+        /* Style for the image in the root */
+        .slide-image { 
+            max-width: 80%; 
+            height: auto; 
+            border: 2px solid #333;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .text-box { 
+            padding: 12px; 
+            width: 300px; 
+            font-size: 16px; 
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .nav-button { 
+            padding: 15px 30px; 
+            background-color: #24292e; /* GitHub Dark */
+            color: white; 
+            text-decoration: none; 
+            border-radius: 6px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .nav-button:hover { background-color: #444; }
     </style>
 </head>
 <body>
 
-<header>
-    <h1>Computing MI</h1>
-    <nav><a href="#terms">Terms & Support</a> | <a href="#privacy">Privacy Policy</a></nav>
-</header>
+    <img src="Screenshot 2026-01-26 175548.png" alt="Presentation Slide" class="slide-image">
 
-<section>
-    <h2>Zero Trust Vision: Project Aegis</h2>
-    <p>The Sekai Universe is a restricted digital environment. [cite: 4]</p>
-    <p>In an age of automated hacking, we use biometric gatekeepers. [cite: 6, 7]</p>
-</section>
+    <input type="text" class="text-box" value="hello world nmnmnmnmnmn">
 
-<section id="verification">
-    <h2>Biometric Gatekeeper</h2>
-    <p>The AI identifies humans as authorized and objects/images as unauthorized. [cite: 11]</p>
-    <video id="webcam" autoplay playsinline style="display:none;"></video>
-    <div id="status">WEBCAM READY</div>
-    <br>
-    <button class="btn" onclick="verify()">Verify Identity</button>
-</section>
-
-<footer id="terms">
-    <h3>Terms & Support</h3>
-    <p>This website content is User Content subject to our Terms of Use. </p>
-    <div id="privacy">
-        <h3>Privacy Policy</h3>
-        <p>Personal data is used according to the creator's privacy practices. </p>
-    </div>
-</footer>
-
-<script>
-    async function verify() {
-        const v = document.getElementById('webcam');
-        const s = document.getElementById('status');
-        try {
-            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-            v.srcObject = stream;
-            v.style.display = "inline-block";
-            s.innerText = "Scanning Neural Network... [cite: 8]";
-            setTimeout(() => { 
-                s.innerHTML = "<h2 style='color:#4aff4a'>Authorized! Welcome to Sekai. [cite: 21, 23]</h2>"; 
-            }, 3000);
-        } catch (e) { s.innerText = "Access Denied: Camera required. [cite: 19]"; }
-    }
-</script>
+    <a href="page2.html" class="nav-button">Navigate to Page 2</a>
 
 </body>
 </html>
